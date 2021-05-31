@@ -1,0 +1,27 @@
+{
+  "name": "material-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/obrm/material-dashboard.git"
+  },
+  "author": "Ori Baram",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/obrm/material-dashboard/issues"
+  },
+  "homepage": "https://github.com/obrm/material-dashboard#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.6",
+    "express": "^4.17.1",
+    "express-validator": "^6.11.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.12"
+  }
+}
