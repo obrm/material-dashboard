@@ -1,128 +1,231 @@
-import React from 'react'
-// @material-ui/core components
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-// core components
-import GridItem from 'components/Grid/GridItem.js'
-import GridContainer from 'components/Grid/GridContainer.js'
-import CustomInput from 'components/CustomInput/CustomInput.js'
-import Button from 'components/CustomButtons/Button.js'
-import Card from 'components/Card/Card.js'
-import CardHeader from 'components/Card/CardHeader.js'
-import CardBody from 'components/Card/CardBody.js'
-import CardFooter from 'components/Card/CardFooter.js'
 import Container from '@material-ui/core/Container'
 
-const styles = {
-  cardCategoryWhite: {
-    color: 'rgba(255,255,255,.62)',
-    margin: '0',
-    fontSize: '14px',
-    marginTop: '0',
-    marginBottom: '0',
-  },
-  cardTitleWhite: {
-    color: '#FFFFFF',
-    marginTop: '0px',
-    minHeight: 'auto',
-    fontWeight: '300',
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: '3px',
-    textDecoration: 'none',
-  },
-}
+import { register } from '../../redux/userActions'
 
-const useStyles = makeStyles(styles)
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: '#00ACC1',
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+    backgroundColor: '#00ACC1',
+  },
+}))
 
-export default function Register() {
+export default function Register({ history }) {
+  const [userDetails, setUserDetails] = useState({
+    userName: '',
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+  })
+
+  const [address, setAddress] = useState({
+    city: '',
+    country: '',
+    postalCode: '',
+  })
+
+  const dispatch = useDispatch()
+
+  const userInfo = useSelector((state) => state.userLogin.userInfo)
+
   const classes = useStyles()
+
+  useEffect(() => {
+    if (userInfo) {
+      history.push('/admin/dashboard')
+    }
+  }, [userInfo, history])
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    const user = {
+      ...userDetails,
+      address,
+    }
+    dispatch(register(user))
+  }
+
+  const onChangeHandlerDetails = (e) => {
+    const { name, value } = e.target
+    setUserDetails((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      }
+    })
+  }
+
+  const onChangeHandlerAddress = (e) => {
+    const { name, value } = e.target
+    setAddress((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      }
+    })
+  }
+
   return (
-    <Container component='main' maxWidth='md'>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={8}>
-          <Card>
-            <CardHeader color='primary'>
-              <h4 className={classes.cardTitleWhite}>Register</h4>
-              <p className={classes.cardCategoryWhite}>
-                All fields are required
-              </p>
-            </CardHeader>
-            <CardBody>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText='Username'
-                    id='username'
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText='Email address'
-                    id='email-address'
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText='First Name'
-                    id='first-name'
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText='Last Name'
-                    id='last-name'
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText='City'
-                    id='city'
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText='Country'
-                    id='country'
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText='Postal Code'
-                    id='postal-code'
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-            </CardBody>
-            <CardFooter>
-              <Button color='primary'>Update Profile</Button>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
+    <Container component='main' maxWidth='xs'>
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component='h1' variant='h5'>
+          Sign up
+        </Typography>
+        <form className={classes.form} noValidate onSubmit={submitHandler}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                autoComplete='uname'
+                name='userName'
+                variant='outlined'
+                value={userDetails.userName}
+                onChange={onChangeHandlerDetails}
+                required
+                fullWidth
+                id='userName'
+                label='User Name'
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete='fname'
+                name='firstName'
+                value={userDetails.firstName}
+                onChange={onChangeHandlerDetails}
+                variant='outlined'
+                required
+                fullWidth
+                id='firstName'
+                label='First Name'
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant='outlined'
+                required
+                value={userDetails.lastName}
+                onChange={onChangeHandlerDetails}
+                fullWidth
+                id='lastName'
+                label='Last Name'
+                name='lastName'
+                autoComplete='lname'
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant='outlined'
+                required
+                fullWidth
+                value={userDetails.email}
+                onChange={onChangeHandlerDetails}
+                id='email'
+                label='Email Address'
+                name='email'
+                autoComplete='email'
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant='outlined'
+                required
+                fullWidth
+                value={userDetails.password}
+                onChange={onChangeHandlerDetails}
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='current-password'
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant='outlined'
+                required
+                fullWidth
+                value={address.city}
+                onChange={onChangeHandlerAddress}
+                id='city'
+                name='city'
+                label='City'
+                autoComplete='city'
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant='outlined'
+                required
+                fullWidth
+                value={address.country}
+                onChange={onChangeHandlerAddress}
+                id='country'
+                name='country'
+                label='Country'
+                autoComplete='country'
+              />
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <TextField
+                variant='outlined'
+                required
+                fullWidth
+                value={address.postalCode}
+                onChange={onChangeHandlerAddress}
+                id='postalCode'
+                name='postalCode'
+                label='Postal Code'
+                autoComplete='postalCode'
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type='submit'
+            fullWidth
+            variant='contained'
+            className={classes.submit}
+          >
+            Sign Up
+          </Button>
+          <Grid container justify='flex-end'>
+            <Grid item>
+              <Link to='/login' variant='body2'>
+                Already have an account? Sign in
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
     </Container>
   )
 }

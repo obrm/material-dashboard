@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -37,6 +38,57 @@ const styles = {
 const useStyles = makeStyles(styles)
 
 export default function UserProfile() {
+  const [userDetails, setUserDetails] = useState({
+    userName: '',
+    email: '',
+    firstName: '',
+    lastName: '',
+  })
+
+  const [address, setAddress] = useState({
+    city: '',
+    country: '',
+    postalCode: '',
+  })
+
+  const dispatch = useDispatch()
+
+  const userInfo = useSelector((state) => state.userLogin.userInfo)
+
+  useEffect(() => {
+    if (userInfo) {
+      setUserDetails(() => ({
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        userName: userInfo.userName,
+        email: userInfo.email,
+      }))
+      setAddress(() => userInfo.address)
+    }
+  }, [userInfo])
+
+  console.log(userDetails, address)
+
+  const onChangeHandlerDetails = (e) => {
+    const { name, value } = e.target
+    setUserDetails((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      }
+    })
+  }
+
+  const onChangeHandlerAddress = (e) => {
+    const { name, value } = e.target
+    setAddress((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      }
+    })
+  }
+
   const classes = useStyles()
   return (
     <div>
@@ -53,6 +105,9 @@ export default function UserProfile() {
                   <CustomInput
                     labelText='Username'
                     id='username'
+                    name='userName'
+                    value={userDetails.userName}
+                    onChange={onChangeHandlerDetails}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -62,6 +117,9 @@ export default function UserProfile() {
                   <CustomInput
                     labelText='Email address'
                     id='email-address'
+                    name='email'
+                    value={userDetails.email}
+                    onChange={onChangeHandlerDetails}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -71,7 +129,10 @@ export default function UserProfile() {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
+                    value={userDetails.firstName}
+                    onChange={onChangeHandlerDetails}
                     labelText='First Name'
+                    name='firstName'
                     id='first-name'
                     formControlProps={{
                       fullWidth: true,
@@ -80,7 +141,10 @@ export default function UserProfile() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
+                    value={userDetails.lastName}
+                    onChange={onChangeHandlerDetails}
                     labelText='Last Name'
+                    name='lastName'
                     id='last-name'
                     formControlProps={{
                       fullWidth: true,
@@ -91,8 +155,11 @@ export default function UserProfile() {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
+                    value={address.city}
+                    onChange={onChangeHandlerAddress}
                     labelText='City'
                     id='city'
+                    name='city'
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -100,8 +167,11 @@ export default function UserProfile() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
+                    value={address.country}
+                    onChange={onChangeHandlerAddress}
                     labelText='Country'
                     id='country'
+                    name='country'
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -109,8 +179,11 @@ export default function UserProfile() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
+                    value={address.postalCode}
+                    onChange={onChangeHandlerAddress}
                     labelText='Postal Code'
                     id='postal-code'
+                    name='postalCode'
                     formControlProps={{
                       fullWidth: true,
                     }}
