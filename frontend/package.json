@@ -3,10 +3,12 @@
   "version": "1.8.0",
   "description": "Material Dashboard React. Coded by Creative Tim",
   "private": false,
+  "proxy": "http://127.0.0.1:5000",
   "main": "dist/index.js",
   "dependencies": {
     "@material-ui/core": "4.3.2",
     "@material-ui/icons": "4.2.1",
+    "axios": "^0.21.1",
     "chartist": "0.10.1",
     "classnames": "2.2.6",
     "history": "4.9.0",
@@ -16,9 +18,13 @@
     "react-chartist": "0.13.3",
     "react-dom": "16.9.0",
     "react-google-maps": "9.4.5",
+    "react-redux": "^7.2.4",
     "react-router-dom": "5.0.1",
     "react-scripts": "3.1.0",
-    "react-swipeable-views": "0.13.3"
+    "react-swipeable-views": "0.13.3",
+    "redux": "^4.1.0",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
