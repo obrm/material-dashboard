@@ -67,8 +67,6 @@ export default function UserProfile() {
     }
   }, [userInfo])
 
-  console.log(userDetails, address)
-
   const onChangeHandlerDetails = (e) => {
     const { name, value } = e.target
     setUserDetails((prev) => {
@@ -106,10 +104,12 @@ export default function UserProfile() {
                     labelText='Username'
                     id='username'
                     name='userName'
-                    value={userDetails.userName}
-                    onChange={onChangeHandlerDetails}
                     formControlProps={{
                       fullWidth: true,
+                    }}
+                    inputProps={{
+                      defaultValue: userDetails.userName || userInfo.userName,
+                      onChange: onChangeHandlerDetails,
                     }}
                   />
                 </GridItem>
@@ -118,8 +118,10 @@ export default function UserProfile() {
                     labelText='Email address'
                     id='email-address'
                     name='email'
-                    value={userDetails.email}
-                    onChange={onChangeHandlerDetails}
+                    inputProps={{
+                      defaultValue: userDetails.email || userInfo.email,
+                      onChange: onChangeHandlerDetails,
+                    }}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -129,11 +131,13 @@ export default function UserProfile() {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
-                    value={userDetails.firstName}
-                    onChange={onChangeHandlerDetails}
                     labelText='First Name'
                     name='firstName'
                     id='first-name'
+                    inputProps={{
+                      defaultValue: userDetails.firstName || userInfo.firstName,
+                      onChange: onChangeHandlerDetails,
+                    }}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -141,11 +145,13 @@ export default function UserProfile() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
-                    value={userDetails.lastName}
-                    onChange={onChangeHandlerDetails}
                     labelText='Last Name'
                     name='lastName'
                     id='last-name'
+                    inputProps={{
+                      defaultValue: userDetails.lastName || userInfo.lastName,
+                      onChange: onChangeHandlerDetails,
+                    }}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -155,11 +161,13 @@ export default function UserProfile() {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    value={address.city}
-                    onChange={onChangeHandlerAddress}
                     labelText='City'
                     id='city'
                     name='city'
+                    inputProps={{
+                      defaultValue: address.city || userInfo.address.city,
+                      onChange: onChangeHandlerDetails,
+                    }}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -167,11 +175,13 @@ export default function UserProfile() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    value={address.country}
-                    onChange={onChangeHandlerAddress}
                     labelText='Country'
                     id='country'
                     name='country'
+                    inputProps={{
+                      defaultValue: address.country || userInfo.address.country,
+                      onChange: onChangeHandlerDetails,
+                    }}
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -179,11 +189,14 @@ export default function UserProfile() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    value={address.postalCode}
-                    onChange={onChangeHandlerAddress}
                     labelText='Postal Code'
                     id='postal-code'
                     name='postalCode'
+                    inputProps={{
+                      defaultValue:
+                        address.postalCode || userInfo.address.postalCode,
+                      onChange: onChangeHandlerDetails,
+                    }}
                     formControlProps={{
                       fullWidth: true,
                     }}
