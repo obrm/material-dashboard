@@ -15,6 +15,9 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      address: user.address,
       token: generateToken(user._id),
     })
   } else {
@@ -93,7 +96,10 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.email = req.body.email || user.email
     user.firstName = req.body.firstName || user.firstName
     user.lastName = req.body.lastName || user.lastName
-    user.address = req.body.address || user.address
+    user.address.city = req.body.address.city || user.address.city
+    user.address.country = req.body.address.country || user.address.country
+    user.address.postalCode =
+      req.body.address.postalCode || user.address.postalCode
 
     if (req.body.password) {
       user.password = req.body.password
@@ -107,7 +113,11 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      address: user.address,
+      address: {
+        city: updateUser.address.city,
+        country: updateUser.address.country,
+        postalCode: updateUser.address.postalCode,
+      },
       token: generateToken(updatedUser._id),
     })
   } else {
