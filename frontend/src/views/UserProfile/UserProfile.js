@@ -13,8 +13,11 @@ import CardHeader from 'components/Card/CardHeader.js'
 import CardAvatar from 'components/Card/CardAvatar.js'
 import CardBody from 'components/Card/CardBody.js'
 import CardFooter from 'components/Card/CardFooter.js'
+import AlertDialog from '../../components/Alerts/AlertDialog'
 
 import avatar from 'assets/img/faces/marc.jpg'
+
+import { updateUserProfile } from '../../redux/userActions'
 
 const styles = {
   cardCategoryWhite: {
@@ -44,16 +47,21 @@ export default function UserProfile() {
     firstName: '',
     lastName: '',
   })
-
   const [address, setAddress] = useState({
     city: '',
     country: '',
     postalCode: '',
   })
+  const [alert, setAlert] = useState({ title: '', message: '', isOpen: false })
+
+  const classes = useStyles()
 
   const dispatch = useDispatch()
 
   const userInfo = useSelector((state) => state.userLogin.userInfo)
+
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
+  const { loading, error } = userUpdateProfile
 
   useEffect(() => {
     if (userInfo) {
@@ -69,6 +77,7 @@ export default function UserProfile() {
 
   const onChangeHandlerDetails = (e) => {
     const { name, value } = e.target
+
     setUserDetails((prev) => {
       return {
         ...prev,
@@ -79,6 +88,7 @@ export default function UserProfile() {
 
   const onChangeHandlerAddress = (e) => {
     const { name, value } = e.target
+
     setAddress((prev) => {
       return {
         ...prev,
@@ -87,9 +97,39 @@ export default function UserProfile() {
     })
   }
 
-  const classes = useStyles()
+  const onClickHandler = (e) => {
+    const user = { ...userDetails, address }
+
+    dispatch(updateUserProfile(user))
+
+    let alertObj = {}
+
+    if (error) {
+      alertObj = {
+        title: 'Update Failed',
+        message: error,
+        isOpen: true,
+      }
+    } else {
+      alertObj = {
+        title: 'Update Successful',
+        message: 'Changes submitted successfully',
+        isOpen: true,
+      }
+    }
+    setAlert(alertObj)
+    setTimeout(() => setAlert((prev) => ({ ...prev, isOpen: false })), 5000)
+  }
+
   return (
     <div>
+      {!loading && alert.isOpen && (
+        <AlertDialog
+          title={alert.title}
+          message={alert.message}
+          isOpen={alert.isOpen}
+        />
+      )}
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
@@ -103,13 +143,13 @@ export default function UserProfile() {
                   <CustomInput
                     labelText='Username'
                     id='username'
-                    name='userName'
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       defaultValue: userDetails.userName || userInfo.userName,
                       onChange: onChangeHandlerDetails,
+                      name: 'userName',
                     }}
                   />
                 </GridItem>
@@ -117,10 +157,10 @@ export default function UserProfile() {
                   <CustomInput
                     labelText='Email address'
                     id='email-address'
-                    name='email'
                     inputProps={{
                       defaultValue: userDetails.email || userInfo.email,
                       onChange: onChangeHandlerDetails,
+                      name: 'email',
                     }}
                     formControlProps={{
                       fullWidth: true,
@@ -132,11 +172,11 @@ export default function UserProfile() {
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText='First Name'
-                    name='firstName'
                     id='first-name'
                     inputProps={{
                       defaultValue: userDetails.firstName || userInfo.firstName,
                       onChange: onChangeHandlerDetails,
+                      name: 'firstName',
                     }}
                     formControlProps={{
                       fullWidth: true,
@@ -146,11 +186,11 @@ export default function UserProfile() {
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText='Last Name'
-                    name='lastName'
                     id='last-name'
                     inputProps={{
                       defaultValue: userDetails.lastName || userInfo.lastName,
                       onChange: onChangeHandlerDetails,
+                      name: 'lastName',
                     }}
                     formControlProps={{
                       fullWidth: true,
@@ -163,10 +203,10 @@ export default function UserProfile() {
                   <CustomInput
                     labelText='City'
                     id='city'
-                    name='city'
                     inputProps={{
                       defaultValue: address.city || userInfo.address.city,
-                      onChange: onChangeHandlerDetails,
+                      onChange: onChangeHandlerAddress,
+                      name: 'city',
                     }}
                     formControlProps={{
                       fullWidth: true,
@@ -177,10 +217,10 @@ export default function UserProfile() {
                   <CustomInput
                     labelText='Country'
                     id='country'
-                    name='country'
                     inputProps={{
                       defaultValue: address.country || userInfo.address.country,
-                      onChange: onChangeHandlerDetails,
+                      onChange: onChangeHandlerAddress,
+                      name: 'country',
                     }}
                     formControlProps={{
                       fullWidth: true,
@@ -191,11 +231,11 @@ export default function UserProfile() {
                   <CustomInput
                     labelText='Postal Code'
                     id='postal-code'
-                    name='postalCode'
                     inputProps={{
                       defaultValue:
                         address.postalCode || userInfo.address.postalCode,
-                      onChange: onChangeHandlerDetails,
+                      onChange: onChangeHandlerAddress,
+                      name: 'postalCode',
                     }}
                     formControlProps={{
                       fullWidth: true,
@@ -221,7 +261,9 @@ export default function UserProfile() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color='primary'>Update Profile</Button>
+              <Button color='primary' onClick={onClickHandler}>
+                Update Profile
+              </Button>
             </CardFooter>
           </Card>
         </GridItem>
@@ -234,7 +276,9 @@ export default function UserProfile() {
             </CardAvatar>
             <CardBody profile>
               <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
-              <h4 className={classes.cardTitle}>Alec Thompson</h4>
+              <h4
+                className={classes.cardTitle}
+              >{`${userInfo.firstName} ${userInfo.lastName}`}</h4>
               <p className={classes.description}>
                 Don{"'"}t be scared of the truth because we need to restart the
                 human foundation in truth And I love you like Kanye loves Kanye
