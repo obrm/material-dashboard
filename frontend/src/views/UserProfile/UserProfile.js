@@ -61,7 +61,7 @@ export default function UserProfile() {
   const userInfo = useSelector((state) => state.userLogin.userInfo)
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-  const { loading, error } = userUpdateProfile
+  const { error } = userUpdateProfile
 
   useEffect(() => {
     if (userInfo) {
@@ -123,7 +123,7 @@ export default function UserProfile() {
 
   return (
     <div>
-      {!loading && alert.isOpen && (
+      {alert.isOpen && (
         <AlertDialog
           title={alert.title}
           message={alert.message}

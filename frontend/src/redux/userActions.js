@@ -33,6 +33,9 @@ export const login = (email, password) => async (dispatch) => {
       type: USER_LOGIN_FAIL,
       payload: errorHandler(err),
     })
+    setTimeout(() => {
+      dispatch(logout())
+    }, 3000)
   }
 }
 
@@ -66,6 +69,9 @@ export const register = (user) => async (dispatch) => {
       type: USER_REGISTER_FAIL,
       payload: errorHandler(err),
     })
+    setTimeout(() => {
+      dispatch(logout())
+    }, 3000)
   }
 }
 
