@@ -11,7 +11,6 @@ import { validators, validate } from '../validators/validators.js'
 router
   .route('/')
   .post(
-    validators.email(),
     validators.password(),
     validators.userName(),
     validators.firstName(),
@@ -19,6 +18,7 @@ router
     validators.city(),
     validators.country(),
     validators.postalCode(),
+    validators.email(),
     validate,
     registerUser
   )
