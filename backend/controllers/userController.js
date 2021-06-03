@@ -68,14 +68,39 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findOneAndUpdate(
-    { _id: req.user._id },
-    { ...req.body },
-    { new: true }
-  ).select('-password')
+  const user = await User.findById(req.user._id)
 
   if (user) {
-    res.json(user)
+    user.userName = req.body.userName || user.userName
+    user.email = req.body.email || user.email
+    user.firstName = req.body.firstName || user.firstName
+    user.lastName = req.body.lastName || user.lastName
+    if (req.body.address) {
+      user.address.city = req.body.address.city || user.address.city
+      user.address.country = req.body.address.country || user.address.country
+      user.address.postalCode =
+        req.body.address.postalCode || user.address.postalCode
+    }
+
+    if (req.body.password) {
+      user.password = req.body.password
+    }
+
+    const updatedUser = await user.save()
+
+    res.json({
+      _id: updatedUser._id,
+      userName: updatedUser.userName,
+      email: updatedUser.email,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
+      address: {
+        city: updatedUser.address.city,
+        country: updatedUser.address.country,
+        postalCode: updatedUser.address.postalCode,
+      },
+      token: generateToken(updatedUser._id),
+    })
   } else {
     res.status(404)
     throw new Error('User not found')
