@@ -1,9 +1,9 @@
-import { ALERT_RESET } from '../alertConstants'
+import { alertConstants } from '../alertConstants'
 import { logout } from '../userActions'
 
 export const alertReset = (dispatch) => {
   return setTimeout(() => {
     dispatch(logout())
-    dispatch({ type: ALERT_RESET })
+    dispatch({ type: alertConstants.ALERT_RESET })
   }, 3000)
 }
