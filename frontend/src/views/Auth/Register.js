@@ -13,6 +13,7 @@ import Container from '@material-ui/core/Container'
 
 import AlertDialog from '../../components/Alerts/AlertDialog'
 
+import { validateInputs } from '../../assets/utils/validateInputs'
 import { register } from '../../redux/userActions'
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +50,16 @@ export default function Register({ history }) {
     country: '',
     postalCode: '',
   })
+  const [validators, setValidators] = useState({
+    userName: false,
+    email: false,
+    password: false,
+    firstName: false,
+    lastName: false,
+    city: false,
+    country: false,
+    postalCode: false,
+  })
 
   const dispatch = useDispatch()
 
@@ -69,6 +80,12 @@ export default function Register({ history }) {
 
   const submitHandler = (e) => {
     e.preventDefault()
+
+    const { errors, status } = validateInputs({ ...userDetails, ...address })
+
+    setValidators(() => errors)
+
+    if (status) return
 
     const user = {
       ...userDetails,
@@ -126,6 +143,8 @@ export default function Register({ history }) {
                   id='userName'
                   label='User Name'
                   autoFocus
+                  type='text'
+                  error={validators.userName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -139,6 +158,8 @@ export default function Register({ history }) {
                   fullWidth
                   id='firstName'
                   label='First Name'
+                  type='text'
+                  error={validators.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -152,6 +173,8 @@ export default function Register({ history }) {
                   label='Last Name'
                   name='lastName'
                   autoComplete='lname'
+                  type='text'
+                  error={validators.lastName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -166,6 +189,7 @@ export default function Register({ history }) {
                   name='email'
                   autoComplete='email'
                   type='email'
+                  error={validators.email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -180,6 +204,7 @@ export default function Register({ history }) {
                   type='password'
                   id='password'
                   autoComplete='current-password'
+                  error={validators.password}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -193,6 +218,8 @@ export default function Register({ history }) {
                   name='city'
                   label='City'
                   autoComplete='city'
+                  type='text'
+                  error={validators.city}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -206,6 +233,8 @@ export default function Register({ history }) {
                   name='country'
                   label='Country'
                   autoComplete='country'
+                  type='text'
+                  error={validators.country}
                 />
               </Grid>
               <Grid item xs={12} md={12}>
@@ -220,6 +249,7 @@ export default function Register({ history }) {
                   label='Postal Code'
                   autoComplete='postalCode'
                   type='number'
+                  error={validators.postalCode}
                 />
               </Grid>
             </Grid>
