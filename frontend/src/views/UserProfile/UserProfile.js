@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
@@ -53,6 +54,8 @@ export default function UserProfile() {
     postalCode: '',
   })
 
+  const history = useHistory()
+
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -63,6 +66,11 @@ export default function UserProfile() {
   const { title, message, isOpen } = alert
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/login')
+      return
+    }
+
     if (userInfo) {
       setUserDetails(() => ({
         firstName: userInfo.firstName,
@@ -72,7 +80,7 @@ export default function UserProfile() {
       }))
       setAddress(() => userInfo.address)
     }
-  }, [userInfo])
+  }, [userInfo, history])
 
   const onChangeHandlerDetails = (e) => {
     const { name, value } = e.target
@@ -124,7 +132,8 @@ export default function UserProfile() {
                       fullWidth: true,
                     }}
                     inputProps={{
-                      defaultValue: userDetails.userName || userInfo.userName,
+                      defaultValue:
+                        userDetails.userName || (userInfo && userInfo.userName),
                       onChange: onChangeHandlerDetails,
                       name: 'userName',
                     }}
@@ -135,7 +144,8 @@ export default function UserProfile() {
                     labelText='Email address'
                     id='email-address'
                     inputProps={{
-                      defaultValue: userDetails.email || userInfo.email,
+                      defaultValue:
+                        userDetails.email || (userInfo && userInfo.email),
                       onChange: onChangeHandlerDetails,
                       name: 'email',
                     }}
@@ -151,7 +161,9 @@ export default function UserProfile() {
                     labelText='First Name'
                     id='first-name'
                     inputProps={{
-                      defaultValue: userDetails.firstName || userInfo.firstName,
+                      defaultValue:
+                        userDetails.firstName ||
+                        (userInfo && userInfo.firstName),
                       onChange: onChangeHandlerDetails,
                       name: 'firstName',
                     }}
@@ -165,7 +177,8 @@ export default function UserProfile() {
                     labelText='Last Name'
                     id='last-name'
                     inputProps={{
-                      defaultValue: userDetails.lastName || userInfo.lastName,
+                      defaultValue:
+                        userDetails.lastName || (userInfo && userInfo.lastName),
                       onChange: onChangeHandlerDetails,
                       name: 'lastName',
                     }}
@@ -181,7 +194,8 @@ export default function UserProfile() {
                     labelText='City'
                     id='city'
                     inputProps={{
-                      defaultValue: address.city || userInfo.address.city,
+                      defaultValue:
+                        address.city || (userInfo && userInfo.address.city),
                       onChange: onChangeHandlerAddress,
                       name: 'city',
                     }}
@@ -195,7 +209,9 @@ export default function UserProfile() {
                     labelText='Country'
                     id='country'
                     inputProps={{
-                      defaultValue: address.country || userInfo.address.country,
+                      defaultValue:
+                        address.country ||
+                        (userInfo && userInfo.address.country),
                       onChange: onChangeHandlerAddress,
                       name: 'country',
                     }}
@@ -210,7 +226,8 @@ export default function UserProfile() {
                     id='postal-code'
                     inputProps={{
                       defaultValue:
-                        address.postalCode || userInfo.address.postalCode,
+                        address.postalCode ||
+                        (userInfo && userInfo.address.postalCode),
                       onChange: onChangeHandlerAddress,
                       name: 'postalCode',
                     }}
@@ -253,9 +270,8 @@ export default function UserProfile() {
             </CardAvatar>
             <CardBody profile>
               <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
-              <h4
-                className={classes.cardTitle}
-              >{`${userInfo.firstName} ${userInfo.lastName}`}</h4>
+              <h4 className={classes.cardTitle}>{`${userInfo &&
+                userInfo.firstName} ${userInfo && userInfo.lastName}`}</h4>
               <p className={classes.description}>
                 Don{"'"}t be scared of the truth because we need to restart the
                 human foundation in truth And I love you like Kanye loves Kanye
