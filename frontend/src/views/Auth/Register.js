@@ -81,11 +81,9 @@ export default function Register({ history }) {
   const submitHandler = (e) => {
     e.preventDefault()
 
-    const { errors, valid } = validateInputs({ ...userDetails, ...address })
+    const errors = validateInputs({ ...userDetails, ...address })
 
     setValidators(() => errors)
-
-    if (!valid) return
 
     const user = {
       ...userDetails,
