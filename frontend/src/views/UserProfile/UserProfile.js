@@ -52,7 +52,6 @@ export default function UserProfile() {
     country: '',
     postalCode: '',
   })
-  const [alert, setAlert] = useState({ title: '', message: '', isOpen: false })
 
   const classes = useStyles()
 
@@ -60,8 +59,8 @@ export default function UserProfile() {
 
   const userInfo = useSelector((state) => state.userLogin.userInfo)
 
-  const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-  const { error } = userUpdateProfile
+  const alert = useSelector((state) => state.alert)
+  const { title, message, isOpen } = alert
 
   useEffect(() => {
     if (userInfo) {
@@ -101,34 +100,12 @@ export default function UserProfile() {
     const user = { ...userDetails, address }
 
     dispatch(updateUserProfile(user))
-
-    let alertObj = {}
-
-    if (error) {
-      alertObj = {
-        title: 'Update Failed',
-        message: error,
-        isOpen: true,
-      }
-    } else {
-      alertObj = {
-        title: 'Update Successful',
-        message: 'Changes submitted successfully',
-        isOpen: true,
-      }
-    }
-    setAlert(alertObj)
-    setTimeout(() => setAlert((prev) => ({ ...prev, isOpen: false })), 5000)
   }
 
   return (
     <div>
-      {alert.isOpen && (
-        <AlertDialog
-          title={alert.title}
-          message={alert.message}
-          isOpen={alert.isOpen}
-        />
+      {isOpen && (
+        <AlertDialog title={title} message={message} isOpen={isOpen} />
       )}
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>

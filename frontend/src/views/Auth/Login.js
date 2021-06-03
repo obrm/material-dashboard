@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [alert, setAlert] = useState({ title: '', message: '', isOpen: false })
 
   const classes = useStyles()
 
@@ -49,24 +48,14 @@ export default function Login() {
 
   const userInfo = useSelector((state) => state.userLogin.userInfo)
 
-  const error = useSelector((state) => state.userLogin.error)
+  const alert = useSelector((state) => state.alert)
+  const { title, message, isOpen } = alert
 
   useEffect(() => {
-    if (error) {
-      setAlert({
-        title: 'Login Failed',
-        message: error,
-        isOpen: true,
-      })
-      setTimeout(() => {
-        setAlert((prev) => ({ ...prev, isOpen: false }))
-      }, 3000)
-    }
-
     if (userInfo) {
       history.push('/admin/dashboard')
     }
-  }, [userInfo, history, error])
+  }, [userInfo, history])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -75,12 +64,8 @@ export default function Login() {
 
   return (
     <>
-      {error && alert.isOpen && (
-        <AlertDialog
-          title={alert.title}
-          message={alert.message}
-          isOpen={alert.isOpen}
-        />
+      {isOpen && (
+        <AlertDialog title={title} message={message} isOpen={isOpen} />
       )}
       <Container component='main' maxWidth='xs'>
         <CssBaseline />

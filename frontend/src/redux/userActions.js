@@ -1,17 +1,21 @@
 import {
+  USER_LOGIN_FAIL,
+  USER_REGISTER_FAIL,
+  USER_UPDATE_PROFILE_FAIL,
+  ALERT_RESET,
+} from './alertConstants'
+import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
-  USER_LOGIN_FAIL,
   USER_LOGOUT,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
-  USER_REGISTER_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
-  USER_UPDATE_PROFILE_FAIL,
 } from './userConstants'
 import { setToStorage, removeFromStorage } from './helper/localStorage'
 import { errorHandler } from './helper/errorHandler'
+import { alertReset } from './helper/alertReset'
 import { loginAPI, registerAPI, updateUserProfileAPI } from './userAPI'
 
 export const login = (email, password) => async (dispatch) => {
@@ -33,9 +37,7 @@ export const login = (email, password) => async (dispatch) => {
       type: USER_LOGIN_FAIL,
       payload: errorHandler(err),
     })
-    setTimeout(() => {
-      dispatch(logout())
-    }, 3000)
+    alertReset(dispatch)
   }
 }
 
@@ -69,9 +71,7 @@ export const register = (user) => async (dispatch) => {
       type: USER_REGISTER_FAIL,
       payload: errorHandler(err),
     })
-    setTimeout(() => {
-      dispatch(logout())
-    }, 3000)
+    alertReset(dispatch)
   }
 }
 
@@ -98,10 +98,17 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     })
 
     setToStorage('userInfo', data)
+
+    setTimeout(() => {
+      dispatch({ type: ALERT_RESET })
+    }, 3000)
   } catch (err) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
       payload: errorHandler(err),
     })
+    setTimeout(() => {
+      dispatch({ type: ALERT_RESET })
+    }, 3000)
   }
 }

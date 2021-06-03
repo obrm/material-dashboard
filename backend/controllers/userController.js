@@ -46,37 +46,21 @@ const registerUser = asyncHandler(async (req, res) => {
     firstName,
     lastName,
     address,
-  }).select('-password')
+  })
 
   if (user) {
     res.status(201).json({
-      ...user,
-      token: generateToken(user._id),
-    })
-  } else {
-    res.status(400)
-    throw new Error('Invalid user data')
-  }
-})
-
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
-const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id)
-
-  if (user) {
-    res.json({
       _id: user._id,
       userName: user.userName,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
       address: user.address,
+      token: generateToken(user._id),
     })
   } else {
-    res.status(404)
-    throw new Error('User not found')
+    res.status(400)
+    throw new Error('Invalid user data')
   }
 })
 
@@ -98,4 +82,4 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 })
 
-export { authUser, registerUser, getUserProfile, updateUserProfile }
+export { authUser, registerUser, updateUserProfile }

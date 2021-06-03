@@ -49,7 +49,6 @@ export default function Register({ history }) {
     country: '',
     postalCode: '',
   })
-  const [alert, setAlert] = useState({ title: '', message: '', isOpen: false })
 
   const dispatch = useDispatch()
 
@@ -57,94 +56,26 @@ export default function Register({ history }) {
 
   const error = useSelector((state) => state.userRegister.error)
 
+  const alert = useSelector((state) => state.alert)
+  const { title, message, isOpen } = alert
+
   const classes = useStyles()
 
   useEffect(() => {
-    if (error) {
-      setAlert({
-        title: 'Login Failed',
-        message: error,
-        isOpen: true,
-      })
-      setTimeout(() => {
-        setAlert((prev) => ({ ...prev, isOpen: false }))
-      }, 3000)
-    }
-
     if (userInfo) {
       history.push('/admin/dashboard')
     }
   }, [userInfo, history, error])
 
-  const capitalize = (str) => {
-    const strLower = str.toLowerCase()
-    return strLower[0].toUpperCase() + strLower.slice(1)
-  }
-
-  const checkEmail = (email) => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    if (
-      re.test(
-        String(email)
-          .trim()
-          .toLowerCase()
-      )
-    ) {
-      return false
-    } else {
-      return true
-    }
-  }
-
   const submitHandler = (e) => {
     e.preventDefault()
 
-    if (
-      userDetails.userName === '' ||
-      userDetails.firstName === '' ||
-      userDetails.lastName === '' ||
-      userDetails.email === '' ||
-      userDetails.password === '' ||
-      address.city === '' ||
-      address.country === '' ||
-      address.postalCode === ''
-    ) {
-      let msg = ''
-      // eslint-disable-next-line
-      for (let key in userDetails) {
-        if (key.includes('Name') && !key.includes('first')) {
-          key = `${capitalize(key.substring(0, 4))} ${key.substring(4)}`
-        } else if (key.includes('first')) {
-          key = `${capitalize(key.substring(0, 5))} ${key.substring(5)}`
-        } else if (key.includes('Code')) {
-          key = `${capitalize(key.substring(0, 6))} ${capitalize(
-            key.substring(6)
-          )}`
-        } else {
-          key = capitalize(key)
-        }
-        msg += `${key} is required. `
-      }
-      setAlert({ title: 'Registration Error', message: msg, isOpen: true })
-      setTimeout(() => {
-        setAlert((prev) => ({ ...prev, isOpen: false }))
-      }, 3000)
-    } else if (checkEmail(userDetails.email)) {
-      setAlert({
-        title: 'Registration Error',
-        message: 'Invalid Email',
-        isOpen: true,
-      })
-      setTimeout(() => {
-        setAlert((prev) => ({ ...prev, isOpen: false }))
-      }, 3000)
-    } else {
-      const user = {
-        ...userDetails,
-        address,
-      }
-      dispatch(register(user))
+    const user = {
+      ...userDetails,
+      address,
     }
+
+    dispatch(register(user))
   }
 
   const onChangeHandlerDetails = (e) => {
@@ -169,12 +100,8 @@ export default function Register({ history }) {
 
   return (
     <>
-      {alert.isOpen && (
-        <AlertDialog
-          title={alert.title}
-          message={alert.message}
-          isOpen={alert.isOpen}
-        />
+      {isOpen && (
+        <AlertDialog title={title} message={message} isOpen={isOpen} />
       )}
       <Container component='main' maxWidth='xs'>
         <CssBaseline />

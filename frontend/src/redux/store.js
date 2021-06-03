@@ -6,11 +6,13 @@ import {
   userRegisterReducer,
   userUpdateProfileReducer,
 } from './userReducers'
+import { alertReducer } from './alertReducer'
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  alert: alertReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')
