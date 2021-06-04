@@ -18,7 +18,7 @@ import AlertDialog from '../../components/Alerts/AlertDialog'
 
 import avatar from 'assets/img/faces/marc.jpg'
 
-import { updateUserProfile } from '../../redux/userActions'
+import { updateUserProfile } from '../../redux/user/userActions'
 
 const styles = {
   cardCategoryWhite: {

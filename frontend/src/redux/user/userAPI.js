@@ -1,4 +1,4 @@
-import { axiosPut, axiosPost } from './helper/axios'
+import { axiosPut, axiosPost } from '../helper/axios'
 import { userUrls } from './userConstants'
 
 export const loginAPI = (userData) => axiosPost(userUrls.LOGIN_URL, userData)

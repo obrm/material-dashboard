@@ -18,8 +18,8 @@ import {
   validatePassword,
   isPasswordsMatch,
 } from '../../assets/validation/validateInputs'
-import { userAuth } from '../../redux/userActions'
-import { showAlert } from '../../redux/alertActions'
+import { userAuth } from '../../redux/user/userActions'
+import { showAlert } from '../../redux/alert/alertActions'
 
 const useStyles = makeStyles((theme) => ({
   paper: {

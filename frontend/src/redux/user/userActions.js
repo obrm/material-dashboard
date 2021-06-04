@@ -1,7 +1,7 @@
-import { alertConstants } from './alertConstants'
+import { alertConstants } from '../alert/alertConstants'
 import { userConstants } from './userConstants'
-import { setToStorage, removeFromStorage } from './helper/localStorage'
-import { errorHandler } from './helper/errorHandler'
+import { setToStorage, removeFromStorage } from '../helper/localStorage'
+import { errorHandler } from '../helper/errorHandler'
 import { loginAPI, registerAPI, updateUserProfileAPI } from './userAPI'
 
 export const userAuth = (params, type) => async (dispatch) => {

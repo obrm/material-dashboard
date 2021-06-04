@@ -13,7 +13,7 @@ import Container from '@material-ui/core/Container'
 
 import AlertDialog from '../../components/Alerts/AlertDialog'
 
-import { userAuth } from '../../redux/userActions'
+import { userAuth } from '../../redux/user/userActions'
 
 const useStyles = makeStyles((theme) => ({
   paper: {

@@ -23,7 +23,7 @@ import Button from 'components/CustomButtons/Button.js'
 
 import styles from 'assets/jss/material-dashboard-react/components/headerLinksStyle.js'
 
-import { logout } from '../../redux/userActions'
+import { logout } from '../../redux/user/userActions'
 
 const useStyles = makeStyles(styles)
 

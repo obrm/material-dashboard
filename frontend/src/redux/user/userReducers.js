@@ -1,5 +1,5 @@
 import { userConstants } from './userConstants'
-import { alertConstants } from './alertConstants'
+import { alertConstants } from '../alert/alertConstants'
 
 export const userReducer = (state = {}, action) => {
   const { type, payload } = action
