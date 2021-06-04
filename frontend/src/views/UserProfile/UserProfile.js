@@ -60,7 +60,7 @@ export default function UserProfile() {
 
   const dispatch = useDispatch()
 
-  const userInfo = useSelector((state) => state.userLogin.userInfo)
+  const userInfo = useSelector((state) => state.user.userInfo)
 
   const alert = useSelector((state) => state.alert)
   const { title, message, isOpen } = alert

@@ -13,7 +13,7 @@ import Container from '@material-ui/core/Container'
 
 import AlertDialog from '../../components/Alerts/AlertDialog'
 
-import { login } from '../../redux/userActions'
+import { userAuth } from '../../redux/userActions'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,7 +46,7 @@ export default function Login() {
 
   const dispatch = useDispatch()
 
-  const userInfo = useSelector((state) => state.userLogin.userInfo)
+  const userInfo = useSelector((state) => state.user.userInfo)
 
   const alert = useSelector((state) => state.alert)
   const { title, message, isOpen } = alert
@@ -59,7 +59,7 @@ export default function Login() {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(login(email, password))
+    dispatch(userAuth({ email, password }, 'login'))
   }
 
   return (

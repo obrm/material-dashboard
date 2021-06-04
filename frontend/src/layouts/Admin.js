@@ -44,7 +44,7 @@ const useStyles = makeStyles(styles)
 export default function Admin({ ...rest }) {
   const history = useHistory()
 
-  const userInfo = useSelector((state) => state.userLogin.userInfo)
+  const userInfo = useSelector((state) => state.user.userInfo)
 
   useEffect(() => {
     if (!userInfo) {

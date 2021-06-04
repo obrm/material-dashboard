@@ -18,7 +18,7 @@ import {
   validatePassword,
   isPasswordsMatch,
 } from '../../assets/validation/validateInputs'
-import { register } from '../../redux/userActions'
+import { userAuth } from '../../redux/userActions'
 import { showAlert } from '../../redux/alertActions'
 
 const useStyles = makeStyles((theme) => ({
@@ -70,9 +70,8 @@ export default function Register({ history }) {
 
   const dispatch = useDispatch()
 
-  const userInfo = useSelector((state) => state.userLogin.userInfo)
-
-  const error = useSelector((state) => state.userRegister.error)
+  const user = useSelector((state) => state.user)
+  const { userInfo, error } = user
 
   const alert = useSelector((state) => state.alert)
   const { title, message, isOpen } = alert
@@ -128,7 +127,7 @@ export default function Register({ history }) {
       address,
     }
 
-    dispatch(register(user))
+    dispatch(userAuth(user, 'register'))
   }
 
   const onChangeHandlerDetails = (e) => {

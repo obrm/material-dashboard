@@ -1,11 +1,12 @@
 import { alertConstants } from './alertConstants'
-import { alertReset } from './helper/alertReset'
 
-export const showAlert = (title, message) => (dispatch) => {
+export const showAlert = (title, message, delay = 3000) => (dispatch) => {
   dispatch({
     type: alertConstants.CUSTOM_ALERT,
     payload: { title, message },
   })
 
-  alertReset(dispatch, 5000)
+  setTimeout(() => {
+    dispatch({ type: alertConstants.ALERT_RESET })
+  }, delay)
 }
