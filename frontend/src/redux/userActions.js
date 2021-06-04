@@ -58,7 +58,7 @@ export const register = (user) => async (dispatch) => {
       type: alertConstants.USER_REGISTER_FAIL,
       payload: errorHandler(err),
     })
-    alertReset(dispatch)
+    alertReset(dispatch, 5000)
   }
 }
 

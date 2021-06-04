@@ -1,4 +1,4 @@
-import { checkEmail } from './checkEmail'
+import Validators from './Validators'
 
 export const validateInputs = (values) => {
   const errors = {}
@@ -6,7 +6,10 @@ export const validateInputs = (values) => {
   for (const key of Object.keys(values)) {
     if (
       validators.checkString(values[key]) ||
-      (key === 'email' && values[key] && validators.checkEmail(values[key]))
+      (key === 'email' && values[key] && validators.checkEmail(values[key])) ||
+      (key === 'password' &&
+        values[key] &&
+        validators.checkPassword(values[key]))
     ) {
       errors[key] = true
     } else {
@@ -21,6 +24,9 @@ const validators = {
     return val.trim() === '' || val === null || val === undefined
   },
   checkEmail: (val) => {
-    return checkEmail(val)
+    return Validators.email(val)
+  },
+  checkPassword: (val) => {
+    return Validators.password(val)
   },
 }

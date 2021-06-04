@@ -13,7 +13,7 @@ import Container from '@material-ui/core/Container'
 
 import AlertDialog from '../../components/Alerts/AlertDialog'
 
-import { validateInputs } from '../../assets/utils/validateInputs'
+import { validateInputs } from '../../assets/validation/validateInputs'
 import { register } from '../../redux/userActions'
 
 const useStyles = makeStyles((theme) => ({
@@ -202,6 +202,7 @@ export default function Register({ history }) {
                   type='password'
                   id='password'
                   autoComplete='current-password'
+                  helperText='Password must contain at least 6 characters, at least one small letter, one big letter, one number and a special character'
                   error={validators.password}
                 />
               </Grid>
