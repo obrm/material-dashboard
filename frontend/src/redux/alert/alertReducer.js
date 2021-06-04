@@ -1,14 +1,15 @@
 import { alertConstants } from './alertConstants'
 
-export const alertReducer = (
-  state = { title: 'Error', isOpen: false },
-  action
-) => {
+export const alertReducer = (state = { isOpen: false }, action) => {
   const { type, payload } = action
 
   switch (type) {
     case alertConstants.USER_FAIL:
-      return { ...state, message: payload, isOpen: true }
+      return {
+        title: 'Authentication Error',
+        message: payload,
+        isOpen: true,
+      }
     case alertConstants.USER_UPDATE_PROFILE_SUCCESS:
       return {
         title: 'Profile update Success',
