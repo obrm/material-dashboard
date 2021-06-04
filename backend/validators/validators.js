@@ -3,6 +3,7 @@ import { body, validationResult } from 'express-validator'
 export const validators = {
   email: () => body('email', `Please enter a valid email address`).isEmail(),
   userName: () => body('userName', 'Username is required').not().isEmpty(),
+  loginPassword: () => body('password', 'Password is required').not().isEmpty(),
   password: () =>
     body(
       'password',

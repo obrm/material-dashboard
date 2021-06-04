@@ -25,7 +25,7 @@ router
 router.post(
   '/login',
   validators.email(),
-  validators.password(),
+  validators.loginPassword(),
   validate,
   authUser
 )
