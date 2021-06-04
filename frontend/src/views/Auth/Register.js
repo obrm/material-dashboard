@@ -13,8 +13,13 @@ import Container from '@material-ui/core/Container'
 
 import AlertDialog from '../../components/Alerts/AlertDialog'
 
-import { validateInputs } from '../../assets/validation/validateInputs'
+import {
+  validateInputs,
+  validatePassword,
+  isPasswordsMatch,
+} from '../../assets/validation/validateInputs'
 import { register } from '../../redux/userActions'
+import { showAlert } from '../../redux/alertActions'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,6 +47,7 @@ export default function Register({ history }) {
     userName: '',
     email: '',
     password: '',
+    password2: '',
     firstName: '',
     lastName: '',
   })
@@ -54,6 +60,7 @@ export default function Register({ history }) {
     userName: false,
     email: false,
     password: false,
+    password2: false,
     firstName: false,
     lastName: false,
     city: false,
@@ -84,6 +91,37 @@ export default function Register({ history }) {
     const errors = validateInputs({ ...userDetails, ...address })
 
     setValidators(() => errors)
+
+    if (
+      userDetails.password2 !== '' &&
+      isPasswordsMatch(userDetails.password, userDetails.password2)
+    ) {
+      setValidators((prev) => {
+        return {
+          ...prev,
+          password2: true,
+        }
+      })
+      dispatch(showAlert('Registration Error', 'Passwords do not match'))
+      return
+    } else if (
+      userDetails.password !== '' &&
+      validatePassword(userDetails.password)
+    ) {
+      setValidators((prev) => {
+        return {
+          ...prev,
+          password: true,
+        }
+      })
+      dispatch(
+        showAlert(
+          'Registration Error',
+          'Password must contain at least 6 characters, at least one small letter, one big letter, one number and a special character'
+        )
+      )
+      return
+    }
 
     const user = {
       ...userDetails,
@@ -204,6 +242,22 @@ export default function Register({ history }) {
                   autoComplete='current-password'
                   helperText='Password must contain at least 6 characters, at least one small letter, one big letter, one number and a special character'
                   error={validators.password}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  required
+                  fullWidth
+                  value={userDetails.password2}
+                  onChange={onChangeHandlerDetails}
+                  name='password2'
+                  label='Repeat Password'
+                  type='password'
+                  id='password2'
+                  autoComplete='current-password'
+                  helperText={validators.password2 && "Passwords don't match"}
+                  error={validators.password2}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>

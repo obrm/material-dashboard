@@ -29,6 +29,12 @@ export const alertReducer = (state = { isOpen: false }, action) => {
         message: 'Profile updated successfully',
         isOpen: true,
       }
+    case alertConstants.CUSTOM_ALERT:
+      return {
+        title: payload.title,
+        message: payload.message,
+        isOpen: true,
+      }
     case alertConstants.ALERT_RESET:
       return {
         isOpen: false,
