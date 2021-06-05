@@ -1,4 +1,5 @@
 import Validators from './Validators'
+import { showAlert } from '../../redux/alert/alertActions'
 
 export const validateInputs = (values) => {
   const errors = {}
@@ -17,6 +18,22 @@ export const validateInputs = (values) => {
     }
   }
   return errors
+}
+
+export const validatePasswords = (password, password2, dispatch) => {
+  if (password2 !== '' && isPasswordsMatch(password, password2)) {
+    dispatch(showAlert('Registration Error', 'Passwords do not match'))
+    return 'password2'
+  } else if (password !== '' && validatePassword(password)) {
+    dispatch(
+      showAlert(
+        'Registration Error',
+        'Password must contain at least 6 characters, at least one small letter, one big letter, one number and a special character'
+      )
+    )
+    return 'password'
+  }
+  return false
 }
 
 export const validatePassword = (password) => {

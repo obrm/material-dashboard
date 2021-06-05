@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -15,11 +15,9 @@ import AlertDialog from '../../components/Alerts/AlertDialog'
 
 import {
   validateInputs,
-  validatePassword,
-  isPasswordsMatch,
+  validatePasswords,
 } from '../../assets/validation/validateInputs'
 import { userAuth } from '../../redux/user/userActions'
-import { showAlert } from '../../redux/alert/alertActions'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Register({ history }) {
+export default function Register() {
   const [userDetails, setUserDetails] = useState({
     userName: '',
     email: '',
@@ -68,6 +66,8 @@ export default function Register({ history }) {
     postalCode: false,
   })
 
+  const history = useHistory()
+
   const dispatch = useDispatch()
 
   const user = useSelector((state) => state.user)
@@ -91,34 +91,19 @@ export default function Register({ history }) {
 
     setValidators(() => errors)
 
-    if (
-      userDetails.password2 !== '' &&
-      isPasswordsMatch(userDetails.password, userDetails.password2)
-    ) {
+    const passwordValidation = validatePasswords(
+      userDetails.password,
+      userDetails.password2,
+      dispatch
+    )
+
+    if (passwordValidation) {
       setValidators((prev) => {
         return {
           ...prev,
-          password2: true,
+          [passwordValidation]: true,
         }
       })
-      dispatch(showAlert('Registration Error', 'Passwords do not match'))
-      return
-    } else if (
-      userDetails.password !== '' &&
-      validatePassword(userDetails.password)
-    ) {
-      setValidators((prev) => {
-        return {
-          ...prev,
-          password: true,
-        }
-      })
-      dispatch(
-        showAlert(
-          'Registration Error',
-          'Password must contain at least 6 characters, at least one small letter, one big letter, one number and a special character'
-        )
-      )
       return
     }
 
