@@ -48,8 +48,6 @@ export default function Register() {
     password2: '',
     firstName: '',
     lastName: '',
-  })
-  const [address, setAddress] = useState({
     city: '',
     country: '',
     postalCode: '',
@@ -84,10 +82,21 @@ export default function Register() {
     }
   }, [userInfo, history, error])
 
+  const {
+    userName,
+    email,
+    password,
+    firstName,
+    lastName,
+    city,
+    country,
+    postalCode,
+  } = userDetails
+
   const submitHandler = (e) => {
     e.preventDefault()
 
-    const errors = validateInputs({ ...userDetails, ...address })
+    const errors = validateInputs({ ...userDetails })
 
     setValidators(() => errors)
 
@@ -108,16 +117,24 @@ export default function Register() {
     }
 
     const user = {
-      ...userDetails,
-      address,
+      userName,
+      email,
+      password,
+      firstName,
+      lastName,
+      address: {
+        city,
+        country,
+        postalCode,
+      },
     }
 
     dispatch(userAuth(user, 'register'))
   }
 
-  const onChangeHandler = (eTarget, setState) => {
-    const { name, value } = eTarget
-    setState((prev) => {
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target
+    setUserDetails((prev) => {
       return {
         ...prev,
         [name]: value,
@@ -147,7 +164,7 @@ export default function Register() {
                   name='userName'
                   variant='outlined'
                   value={userDetails.userName}
-                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
+                  onChange={onChangeHandler}
                   required
                   fullWidth
                   id='userName'
@@ -162,7 +179,7 @@ export default function Register() {
                   autoComplete='fname'
                   name='firstName'
                   value={userDetails.firstName}
-                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
+                  onChange={onChangeHandler}
                   variant='outlined'
                   required
                   fullWidth
@@ -177,7 +194,7 @@ export default function Register() {
                   variant='outlined'
                   required
                   value={userDetails.lastName}
-                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
+                  onChange={onChangeHandler}
                   fullWidth
                   id='lastName'
                   label='Last Name'
@@ -193,7 +210,7 @@ export default function Register() {
                   required
                   fullWidth
                   value={userDetails.email}
-                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
+                  onChange={onChangeHandler}
                   id='email'
                   label='Email Address'
                   name='email'
@@ -208,7 +225,7 @@ export default function Register() {
                   required
                   fullWidth
                   value={userDetails.password}
-                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
+                  onChange={onChangeHandler}
                   name='password'
                   label='Password'
                   type='password'
@@ -224,7 +241,7 @@ export default function Register() {
                   required
                   fullWidth
                   value={userDetails.password2}
-                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
+                  onChange={onChangeHandler}
                   name='password2'
                   label='Repeat Password'
                   type='password'
@@ -239,8 +256,8 @@ export default function Register() {
                   variant='outlined'
                   required
                   fullWidth
-                  value={address.city}
-                  onChange={(e) => onChangeHandler(e.target, setAddress)}
+                  value={userDetails.city}
+                  onChange={onChangeHandler}
                   id='city'
                   name='city'
                   label='City'
@@ -254,8 +271,8 @@ export default function Register() {
                   variant='outlined'
                   required
                   fullWidth
-                  value={address.country}
-                  onChange={(e) => onChangeHandler(e.target, setAddress)}
+                  value={userDetails.country}
+                  onChange={onChangeHandler}
                   id='country'
                   name='country'
                   label='Country'
@@ -269,8 +286,8 @@ export default function Register() {
                   variant='outlined'
                   required
                   fullWidth
-                  value={address.postalCode}
-                  onChange={(e) => onChangeHandler(e.target, setAddress)}
+                  value={userDetails.postalCode}
+                  onChange={onChangeHandler}
                   id='postalCode'
                   name='postalCode'
                   label='Postal Code'
