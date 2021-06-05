@@ -130,19 +130,9 @@ export default function Register({ history }) {
     dispatch(userAuth(user, 'register'))
   }
 
-  const onChangeHandlerDetails = (e) => {
-    const { name, value } = e.target
-    setUserDetails((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      }
-    })
-  }
-
-  const onChangeHandlerAddress = (e) => {
-    const { name, value } = e.target
-    setAddress((prev) => {
+  const onChangeHandler = (eTarget, setState) => {
+    const { name, value } = eTarget
+    setState((prev) => {
       return {
         ...prev,
         [name]: value,
@@ -172,7 +162,7 @@ export default function Register({ history }) {
                   name='userName'
                   variant='outlined'
                   value={userDetails.userName}
-                  onChange={onChangeHandlerDetails}
+                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
                   required
                   fullWidth
                   id='userName'
@@ -187,7 +177,7 @@ export default function Register({ history }) {
                   autoComplete='fname'
                   name='firstName'
                   value={userDetails.firstName}
-                  onChange={onChangeHandlerDetails}
+                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
                   variant='outlined'
                   required
                   fullWidth
@@ -202,7 +192,7 @@ export default function Register({ history }) {
                   variant='outlined'
                   required
                   value={userDetails.lastName}
-                  onChange={onChangeHandlerDetails}
+                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
                   fullWidth
                   id='lastName'
                   label='Last Name'
@@ -218,7 +208,7 @@ export default function Register({ history }) {
                   required
                   fullWidth
                   value={userDetails.email}
-                  onChange={onChangeHandlerDetails}
+                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
                   id='email'
                   label='Email Address'
                   name='email'
@@ -233,7 +223,7 @@ export default function Register({ history }) {
                   required
                   fullWidth
                   value={userDetails.password}
-                  onChange={onChangeHandlerDetails}
+                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
                   name='password'
                   label='Password'
                   type='password'
@@ -249,7 +239,7 @@ export default function Register({ history }) {
                   required
                   fullWidth
                   value={userDetails.password2}
-                  onChange={onChangeHandlerDetails}
+                  onChange={(e) => onChangeHandler(e.target, setUserDetails)}
                   name='password2'
                   label='Repeat Password'
                   type='password'
@@ -265,7 +255,7 @@ export default function Register({ history }) {
                   required
                   fullWidth
                   value={address.city}
-                  onChange={onChangeHandlerAddress}
+                  onChange={(e) => onChangeHandler(e.target, setAddress)}
                   id='city'
                   name='city'
                   label='City'
@@ -280,7 +270,7 @@ export default function Register({ history }) {
                   required
                   fullWidth
                   value={address.country}
-                  onChange={onChangeHandlerAddress}
+                  onChange={(e) => onChangeHandler(e.target, setAddress)}
                   id='country'
                   name='country'
                   label='Country'
@@ -295,7 +285,7 @@ export default function Register({ history }) {
                   required
                   fullWidth
                   value={address.postalCode}
-                  onChange={onChangeHandlerAddress}
+                  onChange={(e) => onChangeHandler(e.target, setAddress)}
                   id='postalCode'
                   name='postalCode'
                   label='Postal Code'
