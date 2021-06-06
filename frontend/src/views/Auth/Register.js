@@ -96,24 +96,26 @@ export default function Register() {
   const submitHandler = (e) => {
     e.preventDefault()
 
-    const errors = validateInputs({ ...userDetails })
+    const { errors, isValid } = validateInputs({ ...userDetails })
 
     setValidators(() => errors)
 
-    const passwordValidation = validatePasswords(
-      userDetails.password,
-      userDetails.password2,
-      dispatch
-    )
+    if (!isValid) {
+      const passwordValidation = validatePasswords(
+        userDetails.password,
+        userDetails.password2,
+        dispatch
+      )
 
-    if (passwordValidation) {
-      setValidators((prev) => {
-        return {
-          ...prev,
-          [passwordValidation]: true,
-        }
-      })
-      return
+      if (passwordValidation) {
+        setValidators((prev) => {
+          return {
+            ...prev,
+            [passwordValidation]: true,
+          }
+        })
+        return
+      }
     }
 
     const user = {

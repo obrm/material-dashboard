@@ -1,32 +1,18 @@
 const Validators = {
   email: (email) => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    if (
-      re.test(
-        String(email)
-          .trim()
-          .toLowerCase()
-      )
-    ) {
-      return false
-    } else {
-      return true
-    }
+    return !re.test(
+      String(email)
+        .trim()
+        .toLowerCase()
+    )
   },
   password: (password) => {
     const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
-    if (re.test(password)) {
-      return false
-    } else {
-      return true
-    }
+    return !re.test(password)
   },
-  matchPasswords: (val1, val2) => {
-    if (val1 === val2) {
-      return false
-    } else {
-      return true
-    }
+  matchPasswords: (password1, password2) => {
+    return password1 !== password2
   },
 }
 

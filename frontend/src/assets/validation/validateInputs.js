@@ -3,6 +3,7 @@ import { showAlert } from '../../redux/alert/alertActions'
 
 export const validateInputs = (values) => {
   const errors = {}
+  let isValid = false
   // eslint-disable-next-line
   for (const key of Object.keys(values)) {
     if (
@@ -13,11 +14,12 @@ export const validateInputs = (values) => {
         validators.checkPassword(values[key]))
     ) {
       errors[key] = true
+      isValid = true
     } else {
       errors[key] = false
     }
   }
-  return errors
+  return { errors, isValid }
 }
 
 export const validatePasswords = (password, password2, dispatch) => {
