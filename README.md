@@ -2,10 +2,6 @@
 
 > MERN Project in which I implemented the backend: auth - user authentication: registration, login and profile update. In the frontend I implemented login page, registration page and profile update logic. State handled with Redux and Redux-thunk.
 
-## Website
-
-[https://obrm-material-dashboard.herokuapp.com](https://obrm-material-dashboard.herokuapp.com)
-
 ## Usage
 
 ### ES Modules in Node
